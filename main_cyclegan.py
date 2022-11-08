@@ -1,5 +1,5 @@
 from networks.cyclegan import CycleGAN
-from process_data import load_dataset
+from scripts.process_data import load_dataset
 from scripts.utils import *
 
 dataset = load_dataset()

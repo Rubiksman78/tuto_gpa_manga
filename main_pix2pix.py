@@ -1,5 +1,5 @@
 from networks.pix2pix import Pix2Pix
-from process_data import load_dataset
+from scripts.process_data import load_dataset
 from scripts.utils import *
 
 dataset = load_dataset()
