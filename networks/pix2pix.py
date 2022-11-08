@@ -1,5 +1,6 @@
 import tensorflow as tf
 from tensorflow import keras
+from neural_networks import Generator, Discriminator
 
 class Pix2Pix(keras.model):
     def __init__(self):
