@@ -20,7 +20,9 @@ def open_images(images_path, images_path_2,volume):
             
 if __name__ == '__main__':
     pdf_path = '../highschoolofthedead/'
-    images_path = 'image_data_OP/'
-    #all_volumes_to_images(pdf_path, images_path)
+    images_path = 'dataset/B/'
+    all_volumes_to_images(pdf_path, images_path)
+    """
     for id in range(1,8):
         open_images(f"../highschoolofthedead/vol{id}/",f"image_data/B/",f'volume_{id}')
+    """
