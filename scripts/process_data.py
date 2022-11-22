@@ -4,8 +4,8 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 
 PATH_TO_DATA = "dataset"
-IMG_WIDTH = 250
-IMG_HEIGHT = 450
+IMG_WIDTH = 256
+IMG_HEIGHT = 256
 NUM_OF_DATA = 100
 BATCH_SIZE = 1
 
@@ -37,7 +37,8 @@ def resize(input_image, real_image, height, width):
 def normalize(input_image, real_image):
     input_image = tf.cast(input_image, dtype=tf.float32) 
     real_image = tf.cast(real_image, dtype=tf.float32) 
-
+    input_image = (input_image / 127.5) - 1
+    real_image = (real_image / 127.5) - 1
     return input_image, real_image
 
 def load_image_train(input_image, real_image):
@@ -56,24 +57,29 @@ def data_generator():
         counter += 1
         if counter > max_number:
             counter = 1
-    
-train_dataset = tf.data.Dataset.from_generator(
-    lambda: data_generator(),
-    output_signature=(
-        tf.TensorSpec(shape=(IMG_HEIGHT, IMG_WIDTH, 3), dtype=tf.uint8),
-        tf.TensorSpec(shape=(IMG_HEIGHT, IMG_WIDTH, 3), dtype=tf.uint8))
-)
 
-train_dataset = train_dataset.shuffle(NUM_OF_DATA)
-train_dataset = train_dataset.batch(BATCH_SIZE)
+def load_dataset():
+    train_dataset = tf.data.Dataset.from_generator(
+        lambda: data_generator(),
+        output_signature=(
+            tf.TensorSpec(shape=(IMG_HEIGHT, IMG_WIDTH, 3), dtype=tf.float32),
+            tf.TensorSpec(shape=(IMG_HEIGHT, IMG_WIDTH, 3), dtype=tf.float32))
+    )
 
-#Show some images from the dataset
-for input_image, real_image in train_dataset.take(1):
-    plt.figure(figsize=(10, 10))
-    plt.subplot(1, 2, 1)
-    numpy_input_image = input_image.numpy()
-    plt.imshow(numpy_input_image[0])
-    plt.subplot(1, 2, 2)
-    numpy_real_image = real_image.numpy()
-    plt.imshow(numpy_real_image[0])
-    plt.show()
+    train_dataset = train_dataset.shuffle(NUM_OF_DATA)
+    train_dataset = train_dataset.batch(BATCH_SIZE)
+    return train_dataset
+
+def show_dataset(dataset):
+    for input_image, real_image in dataset.take(1):
+        input_image = input_image.numpy()
+        real_image = real_image.numpy()
+        plt.figure(figsize=(10, 10))
+        display_list = [input_image[0], real_image[0]]
+        title = ['Input Image', 'Real Image']
+        for i in range(2):
+            plt.subplot(1, 2, i+1)
+            plt.title(title[i])
+            plt.imshow(display_list[i]*0.5 + 0.5)
+            plt.axis('off')
+        plt.show()
