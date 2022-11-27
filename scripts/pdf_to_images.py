@@ -3,7 +3,7 @@ import os
 from PIL import Image
 
 def pdf_volume_to_images(pdf_path, images_path):
-    pages = convert_from_path(pdf_path)
+    pages = convert_from_path(pdf_path,poppler_path=r"C:\Users\Samuel S\Downloads\Release-22.11.0-0\poppler-22.11.0\Library\bin")
     for i in range(len(pages)):
         pages[i].save(images_path.split('.')[0] + 'page_' + str(i) + '.jpg','JPEG')
         
@@ -19,8 +19,8 @@ def open_images(images_path, images_path_2,volume):
         im.save(images_path_2 + 'hod_' + volume + '_' + page)
             
 if __name__ == '__main__':
-    pdf_path = '../highschoolofthedead/'
-    images_path = 'dataset/B/'
+    pdf_path = './test_pdf/'
+    images_path = 'test_pdf/'
     all_volumes_to_images(pdf_path, images_path)
     """
     for id in range(1,8):

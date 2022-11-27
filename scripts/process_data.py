@@ -20,6 +20,8 @@ def read_input_and_real_image(index: int):
     train_b = tf.io.read_file(os.path.join(train_b_path, train_b_list[index]))
     train_a = tf.image.decode_jpeg(train_a, channels=3)
     train_b = tf.image.decode_jpeg(train_b, channels=3)
+    #a is b grayscaled
+    train_a = tf.image.rgb_to_grayscale(train_b)
     return train_a, train_b
 
 def resize(input_image, real_image, height, width):
@@ -62,7 +64,7 @@ def load_dataset():
     train_dataset = tf.data.Dataset.from_generator(
         lambda: data_generator(),
         output_signature=(
-            tf.TensorSpec(shape=(IMG_HEIGHT, IMG_WIDTH, 3), dtype=tf.float32),
+            tf.TensorSpec(shape=(IMG_HEIGHT, IMG_WIDTH, 1), dtype=tf.float32),
             tf.TensorSpec(shape=(IMG_HEIGHT, IMG_WIDTH, 3), dtype=tf.float32))
     )
 
